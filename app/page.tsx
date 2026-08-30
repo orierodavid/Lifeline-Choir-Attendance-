@@ -10,7 +10,7 @@ export default function Home(){
    if(!navigator.geolocation) throw new Error('Location services are not supported on this device.')
    const position=await new Promise<GeolocationPosition>((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:12000,maximumAge:30000}))
    setLocationStatus('Location verified. Recording attendance...');setStatus('')
-   const r=await fetch('/api/check-in',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name,pin,lat:position.coords.latitude,lng:position.coords.longitude})})
+   const r=await fetch('/api/check-in',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name,pin,lat:position.coords.latitude,lng:position.coords.longitude,accuracy:position.coords.accuracy})})
    const d=await r.json(); if(!r.ok) throw new Error(d.error||'Check-in failed')
    setName(d.member?.name||name.trim());setDone(true)
   }catch(e){const message=e instanceof GeolocationPositionError ? 'Please allow location access and try again.' : e instanceof Error ? e.message : 'Unable to check in';setStatus(message);setLocationStatus('Location not verified.')}
