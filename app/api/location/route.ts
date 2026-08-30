@@ -1,0 +1,3 @@
+import {NextResponse} from 'next/server'
+import {supabaseFetch} from '@/lib/supabase'
+export async function GET(){try{const r=await supabaseFetch('admin_settings?select=church_name,church_latitude,church_longitude,church_radius_meters&limit=1',{cache:'no-store'});if(!r.ok)return NextResponse.json({error:'Unable to load attendance location.'},{status:500});const s=(await r.json())?.[0];return NextResponse.json({church_name:s?.church_name||'Attendance location',church_latitude:s?.church_latitude??null,church_longitude:s?.church_longitude??null,church_radius_meters:Number(s?.church_radius_meters)||300},{headers:{'Cache-Control':'no-store, max-age=0'}})}catch{return NextResponse.json({error:'Unable to load attendance location.'},{status:500})}}
