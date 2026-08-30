@@ -1,0 +1,10 @@
+'use client'
+
+import { useState } from 'react'
+
+export default function Home(){
+ const [name,setName]=useState(''); const [pin,setPin]=useState(''); const [status,setStatus]=useState(''); const [done,setDone]=useState(false)
+ async function checkIn(){setStatus('Checking...'); try{const position=await new Promise<GeolocationPosition>((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:8000})); const r=await fetch('/api/check-in',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name,pin,lat:position.coords.latitude,lng:position.coords.longitude})}); const d=await r.json(); if(!r.ok) throw new Error(d.error||'Check-in failed'); setDone(true);setStatus('')}catch(e){setStatus(e instanceof Error?e.message:'Unable to check in')}}
+ if(done)return <main className="shell"><section className="card success"><div className="brand">LIFELINE CHOIR</div><div className="check">✓</div><h1 className="title">You&apos;re marked present</h1><p className="sub">{name} · Saturday attendance recorded.</p></section></main>
+ return <main className="shell"><section className="card"><div className="brand">LIFELINE CHOIR</div><h1 className="title">Attendance</h1><p className="sub">Saturday · 3:00–4:30 PM</p><div className="field"><label className="label">First or Last Name</label><input className="input" value={name} onChange={e=>setName(e.target.value)} placeholder="John" autoComplete="off"/></div><div className="field"><label className="label">4-Digit PIN</label><input className="input pin" value={pin} onChange={e=>setPin(e.target.value.replace(/\D/g,'').slice(0,4))} inputMode="numeric" maxLength={4} placeholder="••••"/></div><div className="location"><span className="dot"/> Checking location...</div>{status&&<p className="muted" style={{marginBottom:16}}>{status}</p>}<button className="primary" disabled={name.trim()===''||pin.length!==4} onClick={checkIn}>CHECK IN</button></section></main>
+}
