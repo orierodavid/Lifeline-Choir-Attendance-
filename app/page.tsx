@@ -1,6 +1,7 @@
 'use client'
 import {useEffect,useState} from 'react'
-function LifelineLogo(){return <div className="member-logo" aria-label="Calvary Bible Church"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="49" fill="url(#g)"/><path d="M44 7c9 12 12 25 14 36 13 2 25 7 36 14-13-3-26-4-37-3 1 15 0 29-6 42V55c-15 2-29 5-42 12 10-12 22-20 36-24-1-12-2-24-1-36Z" fill="#fff"/><defs><linearGradient id="g" x1="18" y1="10" x2="82" y2="90"><stop stopColor="#f9b62d"/><stop offset="1" stopColor="#f58b32"/></linearGradient></defs></svg></div>}
+import {LIFELINE_LOGO} from './lifeline-logo'
+function LifelineLogo(){return <div className="member-logo" aria-label="Calvary Bible Church"><img src={LIFELINE_LOGO} alt="Calvary Bible Church logo"/></div>}
 export default function Home(){
  const[name,setName]=useState(''),[pin,setPin]=useState(''),[status,setStatus]=useState(''),[done,setDone]=useState(false),[loading,setLoading]=useState(false),[locationStatus,setLocationStatus]=useState('Location access is required'),[venue,setVenue]=useState<any>(null)
  useEffect(()=>{fetch('/api/location',{cache:'no-store'}).then(r=>r.json()).then(d=>{if(d.church_name)setVenue(d);else setStatus(d.error||'Unable to load attendance location.')}).catch(()=>setStatus('Unable to load attendance location.'))},[])
