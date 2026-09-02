@@ -1,4 +1,5 @@
 import './globals.css'
+import './admin-login.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'Lifeline Choir Attendance', description: 'Lifeline Choir Attendance System' }
